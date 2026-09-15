@@ -1,113 +1,132 @@
-const connectBtn = document.getElementById('connectBtn');
-const walletForm = document.getElementById('walletForm');
-const tronInput = document.getElementById('tronAddress');
-const checkBtn = document.getElementById('checkBtn');
-const statusMsg = document.getElementById('statusMsg');
-const nextStep = document.getElementById('nextStep');
+const form = document.getElementById("walletForm");
+const input = document.getElementById("tronAddress");
+const status = document.getElementById("statusMsg");
+const clearBtn = document.getElementById("clearBtn");
 
-// Public APIs (No Key Required)
-const TRONGRID_API = 'https://api.trongrid.io';
-const COINGECKO_API = 'https://api.coingecko.com/api/v3/simple/price?ids=tron&vs_currencies=usd';
-const USDT_CONTRACT = 'TR7NhqjeKQxGTCi8q8ZY4pL8otSzgjLj6t';
-const MIN_USD = 20; // Порог проверки
+// Минимальный баланс для Eligibility.
+// Поменяй только это число, если нужен другой порог.
+const MIN_TRX = 100;
 
-// Show form
-connectBtn.addEventListener('click', () => {
-    walletForm.classList.remove('hidden');
-    connectBtn.classList.add('hidden');
-    tronInput.focus();
+// Публичный TRON FullNode endpoint.
+// API-ключ не нужен. Мы только читаем баланс и ничего не подписываем/не отправляем.
+const TRON_NODE = "https://api.trongrid.io/wallet/getaccount";
+
+function setStatus(message, type = "") {
+  status.textContent = message;
+  status.className = "status" + (type ? ` ${type}` : "");
+}
+
+function isValidTronAddress(address) {
+  return /^T[1-9A-HJ-NP-Za-km-z]{33}$/.test(address);
+}
+
+function formatTrx(sun) {
+  return (Number(sun) / 1_000_000).toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 6
+  });
+}
+
+input.addEventListener("input", () => {
+  input.value = input.value.replace(/\s+/g, "");
+  if (status.textContent) setStatus("");
 });
 
-// Validation
-function isValidTron(addr) {
-    return /^T[a-zA-Z0-9]{33}$/.test(addr);
-}
+clearBtn.addEventListener("click", () => {
+  input.value = "";
+  setStatus("");
+  input.focus();
+});
 
-// Status Helper
-function setStatus(msg, type) {
-    statusMsg.textContent = msg;
-    statusMsg.className = 'status ' + type;
-}
+form.addEventListener("submit", async (event) => {
+  event.preventDefault();
 
-// Next Step Logic
-function goToNextStep() {
-    nextStep.classList.remove('hidden');
-    walletForm.classList.add('hidden');
-    nextStep.scrollIntoView({ behavior: 'smooth', block: 'center' });
-}
+  const address = input.value.trim();
 
-// Fetch TRX Balance
-async function getTrxBalance(address) {
-    const res = await fetch(`${TRONGRID_API}/v1/accounts/${address}`);
-    if (!res.ok) throw new Error('TRX fetch failed');
-    const data = await res.json();
-    const account = data.data && data.data[0];
-    if (!account || !account.balance) return 0;
-    return account.balance / 1_000_000;
-}
+  if (!address) {
+    setStatus("Введите публичный TRON-адрес.", "error");
+    input.focus();
+    return;
+  }
 
-// Fetch USDT Balance
-async function getUsdtBalance(address) {
-    const hexAddr = address.substring(1).toLowerCase().padStart(64, '0');
-    const res = await fetch(`${TRONGRID_API}/wallet/triggersmartcontract`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            contract_address: USDT_CONTRACT,
-            function_selector: 'balanceOf(address)',
-            parameter: hexAddr,
-            owner_address: address
-        })
+  if (!isValidTronAddress(address)) {
+    setStatus("Некорректный адрес. TRC-20 адрес должен начинаться с T.", "error");
+    input.focus();
+    return;
+  }
+
+  const checkBtn = document.getElementById("checkBtn");
+  const oldText = checkBtn.innerHTML;
+
+  checkBtn.disabled = true;
+  checkBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Проверяем...';
+  setStatus("Получаем актуальный баланс из сети TRON...");
+
+  try {
+    const response = await fetch(TRON_NODE, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        address,
+        visible: true
+      })
     });
-    if (!res.ok) return 0;
-    const data = await res.json();
-    if (!data.constant_result || !data.constant_result[0]) return 0;
-    const raw = parseInt(data.constant_result[0], 16);
-    return raw / 1_000_000;
-}
 
-// Fetch Price
-async function getTrxPrice() {
-    const res = await fetch(COINGECKO_API);
-    if (!res.ok) throw new Error('Price fetch failed');
-    const data = await res.json();
-    if (!data.tron || !data.tron.usd) throw new Error('Invalid price data');
-    return data.tron.usd;
-}
-
-// Main Check Function
-async function checkWallet() {
-    const addr = tronInput.value.trim();
-
-    if (!addr) { setStatus('Введите адрес кошелька', 'error'); return; }
-    if (!isValidTron(addr)) { setStatus('Некорректный TRON-адрес', 'error'); return; }
-
-    checkBtn.disabled = true;
-    setStatus('<i class="fa-solid fa-spinner fa-spin"></i> Проверяем блокчейн...', 'loading');
-
-    try {
-        const [trxBal, usdtBal, trxPrice] = await Promise.all([
-            getTrxBalance(addr),
-            getUsdtBalance(addr),
-            getTrxPrice()
-        ]);
-
-        const totalUsd = (trxBal * trxPrice) + usdtBal;
-        console.log(`Check: ${addr} | Total: $${totalUsd.toFixed(2)}`);
-
-        if (totalUsd >= MIN_USD) {
-            setStatus('<i class="fa-solid fa-check-circle"></i> Проверка пройдена', 'success');
-            setTimeout(goToNextStep, 1500);
-        } else {
-            setStatus(`<i class="fa-solid fa-circle-xmark"></i> Баланс <$${MIN_USD} (Текущий: $${totalUsd.toFixed(2)})`, 'error');
-            checkBtn.disabled = false;
-        }
-    } catch (err) {
-        console.error(err);
-        setStatus('Ошибка сети. Попробуйте позже.', 'error');
-        checkBtn.disabled = false;
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
     }
-}
 
-checkBtn.addEventListener('click', checkWallet);
-tronInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') checkWallet(); });
+    const account = await response.json();
+
+    // Если аккаунт не создан / нет balance, TRON возвращает объект без balance.
+    const sun = Number(account.balance || 0);
+    const trx = sun / 1_000_000;
+
+    if (trx >= MIN_TRX) {
+      setStatus(
+        `✓ Eligibility подтвержден. Баланс: ${formatTrx(sun)} TRX. Минимум: ${MIN_TRX} TRX.`,
+        "success"
+      );
+    } else {
+      setStatus(
+        `Баланс: ${formatTrx(sun)} TRX. Для Eligibility требуется минимум ${MIN_TRX} TRX.`,
+        "error"
+      );
+    }
+  } catch (error) {
+    console.error("TRON balance check:", error);
+    setStatus(
+      "Не удалось получить баланс. Проверьте адрес или повторите попытку через несколько секунд.",
+      "error"
+    );
+  } finally {
+    checkBtn.disabled = false;
+    checkBtn.innerHTML = oldText;
+  }
+});
+
+// Soft reveal on scroll.
+const revealItems = document.querySelectorAll(
+  ".stat-card, .feature-card, .road-step, .eco-card, .airdrop-card, .tokenomics"
+);
+
+if ("IntersectionObserver" in window) {
+  revealItems.forEach((el) => {
+    el.style.opacity = "0";
+    el.style.transform = "translateY(16px)";
+    el.style.transition = "opacity .6s ease, transform .6s ease";
+  });
+
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.style.opacity = "1";
+      entry.target.style.transform = "translateY(0)";
+      obs.unobserve(entry.target);
+    });
+  }, { threshold: 0.12 });
+
+  revealItems.forEach((el) => observer.observe(el));
+}
