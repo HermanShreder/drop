@@ -3,65 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ekiden Airdrop</title>
+    <title>EKIDEN | Premium Airdrop</title>
+    <!-- Подключаем иконки -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    
+    <!-- Фоновые эффекты -->
+    <div class="bg-glow"></div>
+
     <div class="container">
-        <!-- Header -->
+        
+        <!-- HEADER -->
         <header class="header">
-            <div class="logo">E</div>
-            <h1 class="title">EKIDEN</h1>
+            <div class="logo-box">
+                <i class="fa-solid fa-cube logo-icon"></i>
+                <h1 class="logo-text">EKIDEN</h1>
+            </div>
+            <p class="tagline">Next Gen DeFi Ecosystem</p>
         </header>
 
-        <!-- Stats -->
-        <div class="stats-card">
-            <p>Всего собрали: <span class="highlight">$2.00M</span> / Оценка: <span class="highlight">$20.00M</span></p>
-        </div>
-
-        <!-- Steps -->
-        <section class="steps">
-            <h2>Шаги для получения дропа</h2>
-            <ol>
-                <li>Подключить кошелек Trust Wallet</li>
-                <li>Холдить от $60 до аирдропа (чем выше сумма — тем выше дроп)</li>
-                <li>Ожидать аирдроп</li>
-            </ol>
-            <p class="note">🔜 Далее будет добавлена реферальная система</p>
+        <!-- ABOUT PROJECT -->
+        <section class="card glass-panel">
+            <h2><i class="fa-solid fa-circle-info gold-icon"></i> О Проекте</h2>
+            <p>Ekiden — это децентрализованная платформа нового поколения, объединяющая скорость блокчейна Tron и безопасность смарт-контрактов. Мы создаем экосистему для пассивного заработка, где каждый холдер получает вознаграждение за верность проекту.</p>
         </section>
 
-        <!-- Connect Section -->
-        <section class="connect-section">
-            <button id="connectBtn" class="btn-main">Подключить кошелек</button>
+        <!-- ECONOMY -->
+        <section class="card glass-panel">
+            <h2><i class="fa-solid fa-chart-line gold-icon"></i> Экономика Токена</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-val">$2.00M</span>
+                    <span class="stat-label">Собрано средств</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-val">$20.00M</span>
+                    <span class="stat-label">Оценка проекта</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-val">5%</span>
+                    <span class="stat-label">Комиссия на выкуп</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-val">Deflationary</span>
+                    <span class="stat-label">Модель токена</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ROADMAP -->
+        <section class="card glass-panel">
+            <h2><i class="fa-solid fa-map gold-icon"></i> Roadmap</h2>
+            <ul class="roadmap-list">
+                <li class="roadmap-item active">
+                    <span class="phase">Phase 1</span>
+                    <span class="desc">Запуск сайта, аудит контрактов, маркетинг</span>
+                </li>
+                <li class="roadmap-item">
+                    <span class="phase">Phase 2</span>
+                    <span class="desc">Листинг на DEX, партнерства, стейкинг</span>
+                </li>
+                <li class="roadmap-item">
+                    <span class="phase">Phase 3</span>
+                    <span class="desc">CEX листинги, мобильное приложение, NFT</span>
+                </li>
+            </ul>
+        </section>
+
+        <!-- PARTNERS -->
+        <section class="card glass-panel">
+            <h2><i class="fa-solid fa-handshake gold-icon"></i> Партнеры</h2>
+            <div class="partners-grid">
+                <div class="partner-badge"><i class="fa-brands fa-bitcoin"></i> Binance</div>
+                <div class="partner-badge"><i class="fa-solid fa-shield-halved"></i> Certik</div>
+                <div class="partner-badge"><i class="fa-brands fa-ethereum"></i> TrustWallet</div>
+                <div class="partner-badge"><i class="fa-solid fa-bolt"></i> TronDAO</div>
+            </div>
+        </section>
+
+        <!-- WALLET CHECK SECTION -->
+        <section class="card glass-panel highlight-border">
+            <h2><i class="fa-solid fa-wallet gold-icon"></i> Проверка Eligibility</h2>
+            <p class="section-desc">Для участия в аирдропе ваш кошелек должен соответствовать критериям минимального баланса.</p>
+            
+            <button id="connectBtn" class="btn-gold pulse-btn">
+                <i class="fa-solid fa-link"></i> Подключить кошелек
+            </button>
 
             <div id="walletForm" class="wallet-form hidden">
-                <label for="tronAddress">Укажите ваш TRC-20 USDT Trust Wallet кошелек для проверки минимального баланса для получения аирдропа</label>
-                <input type="text" id="tronAddress" placeholder="T..." maxlength="34" autocomplete="off">
-                <button id="checkBtn" class="btn-secondary">Продолжить</button>
+                <label for="tronAddress">Введите адрес TRC-20 (Trust Wallet)</label>
+                <div class="input-group">
+                    <i class="fa-solid fa-address-card input-icon"></i>
+                    <input type="text" id="tronAddress" placeholder="T..." maxlength="34" autocomplete="off">
+                </div>
+                <button id="checkBtn" class="btn-outline">Проверить баланс</button>
                 <div id="statusMsg" class="status"></div>
             </div>
         </section>
 
-        <!-- Next Step (скрыт по умолчанию) -->
-        <section id="nextStep" class="next-step hidden">
-            <div class="success-icon">✓</div>
-            <p>Проверка пройдена</p>
-            <button class="btn-main">Следующий шаг</button>
-        </section>
-
-        <!-- Socials -->
-        <div class="socials">
-            <a href="#" aria-label="Twitter">𝕏</a>
-            <a href="#" aria-label="Telegram">✈</a>
-            <a href="#" aria-label="Discord">💬</a>
-            <a href="#" aria-label="YouTube">▶</a>
+        <!-- NEXT STEP -->
+        <div id="nextStep" class="card glass-panel success-panel hidden">
+            <div class="success-icon"><i class="fa-solid fa-check"></i></div>
+            <h3>Доступ разрешен</h3>
+            <p>Ваш кошелек соответствует требованиям.</p>
+            <button class="btn-gold">Перейти к регистрации</button>
         </div>
 
-        <!-- Footer -->
+        <!-- FOOTER -->
         <footer>
-            <p>© 2026 Ekiden Project. Все права защищены.</p>
-            <p class="disclaimer">Демонстрационная страница. Не является финансовой рекомендацией.</p>
+            <div class="socials">
+                <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#"><i class="fa-brands fa-telegram"></i></a>
+                <a href="#"><i class="fa-brands fa-discord"></i></a>
+                <a href="#"><i class="fa-brands fa-medium"></i></a>
+            </div>
+            <p>&copy; 2026 Ekiden Foundation. All rights reserved.</p>
+            <p class="disclaimer">Not financial advice. DYOR.</p>
         </footer>
+
     </div>
 
     <script src="app.js"></script>
