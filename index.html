@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ekiden Airdrop</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">E</div>
+            <h1 class="title">EKIDEN</h1>
+        </header>
+
+        <!-- Stats -->
+        <div class="stats-card">
+            <p>Всего собрали: <span class="highlight">$2.00M</span> / Оценка: <span class="highlight">$20.00M</span></p>
+        </div>
+
+        <!-- Steps -->
+        <section class="steps">
+            <h2>Шаги для получения дропа</h2>
+            <ol>
+                <li>Подключить кошелек Trust Wallet</li>
+                <li>Холдить от $60 до аирдропа (чем выше сумма — тем выше дроп)</li>
+                <li>Ожидать аирдроп</li>
+            </ol>
+            <p class="note">🔜 Далее будет добавлена реферальная система</p>
+        </section>
+
+        <!-- Connect Section -->
+        <section class="connect-section">
+            <button id="connectBtn" class="btn-main">Подключить кошелек</button>
+
+            <div id="walletForm" class="wallet-form hidden">
+                <label for="tronAddress">Укажите ваш TRC-20 USDT Trust Wallet кошелек для проверки минимального баланса для получения аирдропа</label>
+                <input type="text" id="tronAddress" placeholder="T..." maxlength="34" autocomplete="off">
+                <button id="checkBtn" class="btn-secondary">Продолжить</button>
+                <div id="statusMsg" class="status"></div>
+            </div>
+        </section>
+
+        <!-- Next Step (скрыт по умолчанию) -->
+        <section id="nextStep" class="next-step hidden">
+            <div class="success-icon">✓</div>
+            <p>Проверка пройдена</p>
+            <button class="btn-main">Следующий шаг</button>
+        </section>
+
+        <!-- Socials -->
+        <div class="socials">
+            <a href="#" aria-label="Twitter">𝕏</a>
+            <a href="#" aria-label="Telegram">✈</a>
+            <a href="#" aria-label="Discord">💬</a>
+            <a href="#" aria-label="YouTube">▶</a>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>© 2026 Ekiden Project. Все права защищены.</p>
+            <p class="disclaimer">Демонстрационная страница. Не является финансовой рекомендацией.</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
