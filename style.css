@@ -1,0 +1,111 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: #fff;
+    line-height: 1.6;
+}
+
+.container { max-width: 700px; margin: 0 auto; padding: 40px 20px; }
+
+/* Header */
+.header { text-align: center; margin-bottom: 30px; }
+.logo {
+    width: 70px; height: 70px; margin: 0 auto 12px;
+    background: rgba(255,255,255,0.15); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem; font-weight: 700; backdrop-filter: blur(10px);
+}
+.title { font-size: 2.2rem; letter-spacing: 3px; text-transform: uppercase; }
+
+/* Stats */
+.stats-card {
+    text-align: center; padding: 18px; margin-bottom: 30px;
+    background: rgba(255,255,255,0.1); border-radius: 12px;
+    backdrop-filter: blur(10px); font-size: 1.05rem;
+}
+.highlight { color: #ffd700; font-weight: 600; }
+
+/* Steps */
+.steps {
+    background: rgba(255,255,255,0.12); padding: 28px;
+    border-radius: 14px; margin-bottom: 30px; backdrop-filter: blur(10px);
+}
+.steps h2 { text-align: center; margin-bottom: 18px; font-size: 1.3rem; }
+.steps ol { padding-left: 20px; }
+.steps li { margin-bottom: 10px; padding: 10px 14px; background: rgba(255,255,255,0.08); border-radius: 8px; }
+.note { text-align: center; margin-top: 16px; opacity: 0.85; font-style: italic; }
+
+/* Buttons */
+.btn-main {
+    display: block; width: 100%; padding: 16px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff; border: none; border-radius: 50px;
+    font-size: 1.15rem; font-weight: 600; cursor: pointer;
+    text-transform: uppercase; letter-spacing: 1px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+.btn-main:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+.btn-main:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.btn-secondary {
+    display: block; width: 100%; padding: 12px; margin-top: 12px;
+    background: rgba(255,255,255,0.2); color: #fff;
+    border: 2px solid rgba(255,255,255,0.3); border-radius: 50px;
+    font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
+}
+.btn-secondary:hover { background: rgba(255,255,255,0.3); }
+.btn-secondary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Wallet Form */
+.connect-section { text-align: center; margin-bottom: 30px; }
+.wallet-form {
+    margin-top: 24px; padding: 24px;
+    background: rgba(255,255,255,0.12); border-radius: 12px;
+    backdrop-filter: blur(10px); text-align: left;
+}
+.wallet-form label { display: block; margin-bottom: 12px; font-size: 0.9rem; line-height: 1.5; }
+.wallet-form input {
+    width: 100%; padding: 14px 16px; font-size: 1rem;
+    border: 2px solid rgba(255,255,255,0.3); border-radius: 8px;
+    background: rgba(255,255,255,0.1); color: #fff; outline: none;
+    transition: border-color 0.2s;
+}
+.wallet-form input::placeholder { color: rgba(255,255,255,0.5); }
+.wallet-form input:focus { border-color: rgba(255,255,255,0.6); }
+
+.status { margin-top: 14px; padding: 10px; border-radius: 8px; text-align: center; font-weight: 500; min-height: 20px; }
+.status.success { background: rgba(72,187,120,0.3); color: #9ae6b4; }
+.status.error { background: rgba(245,101,101,0.3); color: #feb2b2; }
+.status.loading { background: rgba(236,201,75,0.3); color: #fefcbf; }
+
+/* Next Step */
+.next-step {
+    text-align: center; padding: 28px; margin-top: 24px;
+    background: rgba(255,255,255,0.12); border-radius: 14px; backdrop-filter: blur(10px);
+}
+.success-icon { font-size: 2.8rem; color: #48bb78; margin-bottom: 12px; }
+.next-step p { font-size: 1.2rem; font-weight: 600; margin-bottom: 18px; }
+
+/* Socials */
+.socials { display: flex; justify-content: center; gap: 16px; margin: 36px 0; }
+.socials a {
+    width: 46px; height: 46px; display: flex; align-items: center; justify-content: center;
+    background: rgba(255,255,255,0.15); border-radius: 50%; color: #fff;
+    text-decoration: none; font-size: 1.2rem; transition: all 0.2s;
+}
+.socials a:hover { background: rgba(255,255,255,0.3); transform: translateY(-3px); }
+
+/* Footer */
+footer { text-align: center; padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.15); opacity: 0.7; font-size: 0.85rem; }
+.disclaimer { margin-top: 6px; font-style: italic; opacity: 0.6; }
+
+.hidden { display: none !important; }
+
+@media (max-width: 600px) {
+    .title { font-size: 1.7rem; }
+    .btn-main { font-size: 1rem; padding: 14px; }
+}
