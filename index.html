@@ -1,130 +1,357 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EKIDEN | Premium Airdrop</title>
-    <!-- Подключаем иконки -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#050b16">
+  <meta name="description" content="EKIDEN — next generation DeFi ecosystem and token airdrop.">
+  <title>EKIDEN — DeFi Airdrop</title>
+
+  <!-- Font Awesome: реальные SVG/webfont-иконки вместо emoji -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css">
+
+  <!-- Inter — чистая современная типографика -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    
-    <!-- Фоновые эффекты -->
-    <div class="bg-glow"></div>
+  <div class="site-bg" aria-hidden="true">
+    <div class="grid"></div>
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+    <div class="noise"></div>
+  </div>
 
-    <div class="container">
-        
-        <!-- HEADER -->
-        <header class="header">
-            <div class="logo-box">
-                <i class="fa-solid fa-cube logo-icon"></i>
-                <h1 class="logo-text">EKIDEN</h1>
-            </div>
-            <p class="tagline">Next Gen DeFi Ecosystem</p>
-        </header>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="EKIDEN home">
+      <span class="brand-mark"><i class="fa-solid fa-cube"></i></span>
+      <span>EKIDEN</span>
+    </a>
 
-        <!-- ABOUT PROJECT -->
-        <section class="card glass-panel">
-            <h2><i class="fa-solid fa-circle-info gold-icon"></i> О Проекте</h2>
-            <p>Ekiden — это децентрализованная платформа нового поколения, объединяющая скорость блокчейна Tron и безопасность смарт-контрактов. Мы создаем экосистему для пассивного заработка, где каждый холдер получает вознаграждение за верность проекту.</p>
-        </section>
+    <nav class="nav">
+      <a href="#about">О проекте</a>
+      <a href="#token">Токен</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#airdrop">Airdrop</a>
+    </nav>
 
-        <!-- ECONOMY -->
-        <section class="card glass-panel">
-            <h2><i class="fa-solid fa-chart-line gold-icon"></i> Экономика Токена</h2>
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <span class="stat-val">$2.00M</span>
-                    <span class="stat-label">Собрано средств</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-val">$20.00M</span>
-                    <span class="stat-label">Оценка проекта</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-val">5%</span>
-                    <span class="stat-label">Комиссия на выкуп</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-val">Deflationary</span>
-                    <span class="stat-label">Модель токена</span>
-                </div>
-            </div>
-        </section>
+    <a class="topbar-cta" href="#airdrop">
+      <i class="fa-solid fa-bolt"></i>
+      Claim Airdrop
+    </a>
+  </header>
 
-        <!-- ROADMAP -->
-        <section class="card glass-panel">
-            <h2><i class="fa-solid fa-map gold-icon"></i> Roadmap</h2>
-            <ul class="roadmap-list">
-                <li class="roadmap-item active">
-                    <span class="phase">Phase 1</span>
-                    <span class="desc">Запуск сайта, аудит контрактов, маркетинг</span>
-                </li>
-                <li class="roadmap-item">
-                    <span class="phase">Phase 2</span>
-                    <span class="desc">Листинг на DEX, партнерства, стейкинг</span>
-                </li>
-                <li class="roadmap-item">
-                    <span class="phase">Phase 3</span>
-                    <span class="desc">CEX листинги, мобильное приложение, NFT</span>
-                </li>
-            </ul>
-        </section>
-
-        <!-- PARTNERS -->
-        <section class="card glass-panel">
-            <h2><i class="fa-solid fa-handshake gold-icon"></i> Партнеры</h2>
-            <div class="partners-grid">
-                <div class="partner-badge"><i class="fa-brands fa-bitcoin"></i> Binance</div>
-                <div class="partner-badge"><i class="fa-solid fa-shield-halved"></i> Certik</div>
-                <div class="partner-badge"><i class="fa-brands fa-ethereum"></i> TrustWallet</div>
-                <div class="partner-badge"><i class="fa-solid fa-bolt"></i> TronDAO</div>
-            </div>
-        </section>
-
-        <!-- WALLET CHECK SECTION -->
-        <section class="card glass-panel highlight-border">
-            <h2><i class="fa-solid fa-wallet gold-icon"></i> Проверка Eligibility</h2>
-            <p class="section-desc">Для участия в аирдропе ваш кошелек должен соответствовать критериям минимального баланса.</p>
-            
-            <button id="connectBtn" class="btn-gold pulse-btn">
-                <i class="fa-solid fa-link"></i> Подключить кошелек
-            </button>
-
-            <div id="walletForm" class="wallet-form hidden">
-                <label for="tronAddress">Введите адрес TRC-20 (Trust Wallet)</label>
-                <div class="input-group">
-                    <i class="fa-solid fa-address-card input-icon"></i>
-                    <input type="text" id="tronAddress" placeholder="T..." maxlength="34" autocomplete="off">
-                </div>
-                <button id="checkBtn" class="btn-outline">Проверить баланс</button>
-                <div id="statusMsg" class="status"></div>
-            </div>
-        </section>
-
-        <!-- NEXT STEP -->
-        <div id="nextStep" class="card glass-panel success-panel hidden">
-            <div class="success-icon"><i class="fa-solid fa-check"></i></div>
-            <h3>Доступ разрешен</h3>
-            <p>Ваш кошелек соответствует требованиям.</p>
-            <button class="btn-gold">Перейти к регистрации</button>
+  <main id="top">
+    <!-- HERO -->
+    <section class="hero container">
+      <div class="hero-copy">
+        <div class="eyebrow">
+          <span class="status-dot"></span>
+          NEXT GEN DEFI ECOSYSTEM
         </div>
 
-        <!-- FOOTER -->
-        <footer>
-            <div class="socials">
-                <a href="#"><i class="fa-brands fa-twitter"></i></a>
-                <a href="#"><i class="fa-brands fa-telegram"></i></a>
-                <a href="#"><i class="fa-brands fa-discord"></i></a>
-                <a href="#"><i class="fa-brands fa-medium"></i></a>
+        <h1>
+          Ваш доступ к
+          <span>новой DeFi</span>
+          экосистеме.
+        </h1>
+
+        <p class="hero-text">
+          EKIDEN объединяет быстрые транзакции, прозрачную токеномику
+          и механику вознаграждений в единой экосистеме на TRON.
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#airdrop">
+            <i class="fa-solid fa-gift"></i>
+            Проверить Eligibility
+          </a>
+          <a class="btn btn-secondary" href="#about">
+            <i class="fa-solid fa-arrow-down"></i>
+            Узнать больше
+          </a>
+        </div>
+
+        <div class="trust-row">
+          <div><i class="fa-solid fa-shield-halved"></i> Non-custodial</div>
+          <div><i class="fa-solid fa-bolt"></i> TRON Network</div>
+          <div><i class="fa-solid fa-lock"></i> Public wallet only</div>
+        </div>
+      </div>
+
+      <div class="hero-visual" aria-hidden="true">
+        <div class="orbit orbit-a"></div>
+        <div class="orbit orbit-b"></div>
+        <div class="orbit orbit-c"></div>
+
+        <div class="token-3d">
+          <div class="coin coin-front">
+            <div class="coin-inner">
+              <i class="fa-solid fa-cube"></i>
+              <strong>E</strong>
+              <small>EKIDEN</small>
             </div>
-            <p>&copy; 2026 Ekiden Foundation. All rights reserved.</p>
-            <p class="disclaimer">Not financial advice. DYOR.</p>
-        </footer>
+          </div>
+          <div class="coin coin-back"></div>
+        </div>
 
+        <div class="float-card card-a">
+          <span class="mini-icon"><i class="fa-solid fa-chart-line"></i></span>
+          <span><b>$20M</b><small>Project valuation</small></span>
+        </div>
+
+        <div class="float-card card-b">
+          <span class="mini-icon"><i class="fa-solid fa-layer-group"></i></span>
+          <span><b>TRC-20</b><small>Token standard</small></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATS -->
+    <section class="stats container" id="token">
+      <div class="stat-card">
+        <span class="stat-icon"><i class="fa-solid fa-coins"></i></span>
+        <div><strong>$2.00M</strong><span>Target / raised</span></div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon"><i class="fa-solid fa-chart-pie"></i></span>
+        <div><strong>$20.00M</strong><span>Project valuation</span></div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon"><i class="fa-solid fa-fire-flame-curved"></i></span>
+        <div><strong>5%</strong><span>Buyback fee</span></div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon"><i class="fa-solid fa-arrow-trend-down"></i></span>
+        <div><strong>Deflationary</strong><span>Token model</span></div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="section container" id="about">
+      <div class="section-heading">
+        <div>
+          <span class="section-kicker">01 / OVERVIEW</span>
+          <h2>Экосистема, собранная<br><span>вокруг одного токена.</span></h2>
+        </div>
+        <p>
+          Четкая структура вместо перегруженного лендинга: продукт,
+          токеномика, roadmap и проверка eligibility находятся в одном месте.
+        </p>
+      </div>
+
+      <div class="feature-grid">
+        <article class="feature-card feature-large">
+          <div class="feature-top">
+            <span class="feature-icon"><i class="fa-solid fa-network-wired"></i></span>
+            <span class="feature-number">01</span>
+          </div>
+          <h3>Быстрая инфраструктура</h3>
+          <p>Архитектура ориентирована на быстрые операции и низкую стоимость транзакций в сети TRON.</p>
+          <div class="feature-line"></div>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-top">
+            <span class="feature-icon"><i class="fa-solid fa-shield-halved"></i></span>
+            <span class="feature-number">02</span>
+          </div>
+          <h3>Прозрачная механика</h3>
+          <p>Показываем ключевые параметры токена и этапы развития без лишних блоков.</p>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-top">
+            <span class="feature-icon"><i class="fa-solid fa-users"></i></span>
+            <span class="feature-number">03</span>
+          </div>
+          <h3>Community first</h3>
+          <p>Аирдроп становится точкой входа в экосистему и дальнейшее участие сообщества.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- TOKENOMICS -->
+    <section class="section container">
+      <div class="section-heading compact">
+        <div>
+          <span class="section-kicker">02 / TOKENOMICS</span>
+          <h2>Экономика токена</h2>
+        </div>
+      </div>
+
+      <div class="tokenomics">
+        <div class="tokenomics-card">
+          <div class="ring">
+            <div class="ring-center">
+              <strong>100%</strong>
+              <span>EKIDEN</span>
+            </div>
+          </div>
+          <div class="token-symbol"><i class="fa-solid fa-cube"></i> EKI</div>
+        </div>
+
+        <div class="allocation-list">
+          <div class="allocation">
+            <span><i class="fa-solid fa-circle"></i> Community & Airdrop</span>
+            <strong>40%</strong>
+            <div class="bar"><i style="width:40%"></i></div>
+          </div>
+          <div class="allocation">
+            <span><i class="fa-solid fa-circle"></i> Liquidity</span>
+            <strong>25%</strong>
+            <div class="bar"><i style="width:25%"></i></div>
+          </div>
+          <div class="allocation">
+            <span><i class="fa-solid fa-circle"></i> Ecosystem</span>
+            <strong>20%</strong>
+            <div class="bar"><i style="width:20%"></i></div>
+          </div>
+          <div class="allocation">
+            <span><i class="fa-solid fa-circle"></i> Treasury</span>
+            <strong>15%</strong>
+            <div class="bar"><i style="width:15%"></i></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ROADMAP -->
+    <section class="section container" id="roadmap">
+      <div class="section-heading compact">
+        <div>
+          <span class="section-kicker">03 / ROADMAP</span>
+          <h2>Путь EKIDEN</h2>
+        </div>
+      </div>
+
+      <div class="roadmap">
+        <div class="road-step active">
+          <div class="road-marker"><i class="fa-solid fa-check"></i></div>
+          <div class="road-content">
+            <span>PHASE 01</span>
+            <h3>Launch</h3>
+            <p>Запуск сайта, базовая инфраструктура, аудит и старт маркетинга.</p>
+          </div>
+        </div>
+
+        <div class="road-step">
+          <div class="road-marker"><i class="fa-solid fa-code"></i></div>
+          <div class="road-content">
+            <span>PHASE 02</span>
+            <h3>Growth</h3>
+            <p>DEX, партнерские интеграции, community-программы и staking.</p>
+          </div>
+        </div>
+
+        <div class="road-step">
+          <div class="road-marker"><i class="fa-solid fa-rocket"></i></div>
+          <div class="road-content">
+            <span>PHASE 03</span>
+            <h3>Expansion</h3>
+            <p>CEX-направление, мобильный продукт, NFT и новые ecosystem utilities.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AIRDROP -->
+    <section class="airdrop-wrap container" id="airdrop">
+      <div class="airdrop-card">
+        <div class="airdrop-glow"></div>
+
+        <div class="airdrop-copy">
+          <span class="section-kicker">04 / AIRDROP</span>
+          <h2>Проверьте свой<br><span>Eligibility.</span></h2>
+          <p>
+            Используйте только публичный TRON-адрес. Никогда не вводите
+            seed phrase, private key или пароль от кошелька.
+          </p>
+
+          <div class="security-note">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span><strong>Безопасность:</strong> сайт не запрашивает seed phrase или private key.</span>
+          </div>
+        </div>
+
+        <div class="airdrop-panel">
+          <div class="panel-head">
+            <div>
+              <span>ELIGIBILITY CHECK</span>
+              <strong>TRC-20 wallet</strong>
+            </div>
+            <span class="live"><i></i> ONLINE</span>
+          </div>
+
+          <form id="walletForm" novalidate>
+            <label for="tronAddress">Ваш публичный адрес</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-wallet"></i>
+              <input
+                id="tronAddress"
+                type="text"
+                inputmode="text"
+                maxlength="34"
+                autocomplete="off"
+                placeholder="Txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+              >
+              <button type="button" id="clearBtn" class="clear-btn" aria-label="Очистить">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+
+            <button id="checkBtn" class="btn btn-primary full" type="submit">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              Проверить адрес
+            </button>
+
+            <div id="statusMsg" class="status" role="status" aria-live="polite"></div>
+          </form>
+
+          <div class="panel-foot">
+            <span><i class="fa-solid fa-lock"></i> Public address only</span>
+            <span><i class="fa-solid fa-link"></i> TRON / TRC-20</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ECOSYSTEM -->
+    <section class="section container">
+      <div class="section-heading compact">
+        <div>
+          <span class="section-kicker">05 / ECOSYSTEM</span>
+          <h2>Инфраструктура</h2>
+        </div>
+        <p>Замените эти карточки на подтвержденные интеграции и партнерства проекта перед публикацией.</p>
+      </div>
+
+      <div class="ecosystem-grid">
+        <div class="eco-card"><i class="fa-brands fa-bitcoin"></i><span>Binance</span><small>Infrastructure</small></div>
+        <div class="eco-card"><i class="fa-solid fa-shield-halved"></i><span>CertiK</span><small>Security</small></div>
+        <div class="eco-card"><i class="fa-brands fa-ethereum"></i><span>Trust Wallet</span><small>Wallet</small></div>
+        <div class="eco-card"><i class="fa-solid fa-bolt"></i><span>TRON</span><small>Network</small></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner container">
+      <div class="brand"><span class="brand-mark"><i class="fa-solid fa-cube"></i></span><span>EKIDEN</span></div>
+      <div class="socials">
+        <a href="#" aria-label="Telegram"><i class="fa-brands fa-telegram"></i></a>
+        <a href="#" aria-label="Discord"><i class="fa-brands fa-discord"></i></a>
+        <a href="#" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+      </div>
+      <div class="footer-copy">© 2026 EKIDEN Foundation · DYOR</div>
     </div>
+  </footer>
 
-    <script src="app.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
